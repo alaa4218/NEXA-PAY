@@ -1,2 +1,1 @@
-# NEXA-PAY
-JUST BE HONEST
+
