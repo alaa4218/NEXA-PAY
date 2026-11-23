@@ -2,15 +2,14 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<meta name="theme-color" content="#1f3a5f">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NexaPay — Prototype interactif</title>
 <style>
-:root{--bg:#f3f6fb;--card:#fff;--ink:#0f2238;--mut:#5b6b80;--line:#e2e8f1;--brand:#0e7c86;--navy:#1f3a5f;--ok:#17803d;--okbg:#e6f5ec;--warn:#9a5b00;--warnbg:#fff1d6;--bad:#b3261e;--badbg:#fdeaea;--sh:0 1px 2px rgba(15,34,56,.06),0 6px 18px rgba(15,34,56,.06);color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+:root{--bg:#f3f6fb;--card:#fff;--ink:#0f2238;--mut:#5b6b80;--line:#e2e8f1;--brand:#0e7c86;--navy:#1f3a5f;--ok:#17803d;--okbg:#e6f5ec;--warn:#9a5b00;--warnbg:#fff1d6;--bad:#b3261e;--badbg:#fdeaea;--sh:0 1px 2px rgba(15,34,56,.06),0 6px 18px rgba(15,34,56,.06);color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1624;--card:#12233a;--ink:#e8eef7;--mut:#93a4ba;--line:#223650;--brand:#38b6c1;--navy:#10243f;--ok:#5bd68b;--okbg:#12361f;--warn:#f2b74f;--warnbg:#3a2c0e;--bad:#ff8a80;--badbg:#3d1815}}
 :root[data-theme="dark"]{--bg:#0b1624;--card:#12233a;--ink:#e8eef7;--mut:#93a4ba;--line:#223650;--brand:#38b6c1;--navy:#10243f;--ok:#5bd68b;--okbg:#12361f;--warn:#f2b74f;--warnbg:#3a2c0e;--bad:#ff8a80;--badbg:#3d1815}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100dvh;overflow-x:clip;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:30}
 a{color:inherit;text-decoration:none}
 .sim{background:var(--warnbg);color:var(--warn);text-align:center;font-size:12px;padding:6px 10px;font-weight:600}
@@ -18,7 +17,7 @@ a{color:inherit;text-decoration:none}
 header{background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px}
 .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:17px;letter-spacing:.2px}
 .sp{flex:1}.who{font-size:12px;opacity:.85;text-align:right}
-.tg{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:10px;padding:0 12px;min-height:44px;cursor:pointer}
+.tg{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer}
 .wrap{display:grid;grid-template-columns:210px 1fr;max-width:1180px;margin:0 auto}
 nav.side{padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:96px;align-self:start}
 nav a{padding:10px 12px;border-radius:10px;color:var(--mut);font-weight:600}
@@ -38,7 +37,7 @@ h1{font-size:21px;margin:0 0 4px}.sub{color:var(--mut);margin:0 0 16px}
 label{display:block;font-weight:600;margin:12px 0 4px}
 input,select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
 input:focus,select:focus{outline:2px solid var(--brand);outline-offset:1px}
-.btn{background:var(--brand);color:#fff;border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-align:center}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer}
 .btn.s{background:transparent;color:var(--brand);border:1px solid var(--brand)}.btn.d{background:transparent;color:var(--bad);border:1px solid var(--bad)}
 .btn:disabled{opacity:.5;cursor:wait}
 .err{color:var(--bad);font-size:12px;margin-top:6px;min-height:16px}
@@ -50,39 +49,15 @@ input:focus,select:focus{outline:2px solid var(--brand);outline-offset:1px}
 .steps{margin:8px 0 0;padding:0;list-style:none}.steps li{padding:6px 0 6px 18px;position:relative;border-left:2px solid var(--line);margin-left:6px}
 .steps li::before{content:"";position:absolute;left:-6px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--brand)}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;padding:12px 16px;border-radius:12px;box-shadow:var(--sh);z-index:40;max-width:92vw;display:none}
-.bt{display:none}
+.bt{display:none}body.anon nav.side,body.anon .bt{display:none!important}body.anon .wrap{grid-template-columns:1fr}
 @media(max-width:860px){.wrap{grid-template-columns:1fr}nav.side{display:none}.two{grid-template-columns:1fr}.who{display:none}
 .bt{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:25}
 .bt a{flex:1;text-align:center;padding:8px 2px;font-size:12px;font-weight:600;color:var(--mut);border-radius:10px}.bt a.on{color:var(--brand);background:var(--bg)}
 .row.t{grid-template-columns:1fr .9fr .8fr}.row.t>:nth-child(2){display:none}.two.eq{grid-template-columns:1fr}.tb{grid-template-columns:1fr 1fr}.tb input{grid-column:1/-1}}
-.sh{display:none}.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}.acts .btn{flex:1 1 150px}
-input,select{min-height:44px;scroll-margin-bottom:140px}.card,main{min-width:0}.note,.sub{overflow-wrap:anywhere}[data-act=close]{padding:12px 8px;margin:-12px -8px}
-@media(max-width:860px){
-.lg{display:none}.sh{display:inline}.sim{padding:4px 10px;font-size:11px}
-header{padding:6px 12px;gap:8px;min-height:52px}.logo{font-size:16px}
-.who{display:block;font-size:11px;max-width:46vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.who br{display:none}.who b{margin-right:4px}
-main{padding:14px 14px calc(88px + env(safe-area-inset-bottom,0px))}
-h1{font-size:22px;line-height:1.2}.sub{font-size:14px;margin-bottom:14px}
-input,select{font-size:16px;min-height:48px}.btn{min-height:48px;font-size:15px}
-.card{padding:16px;border-radius:16px}
-.grid{grid-template-columns:1fr 1fr;gap:10px}.grid>.card{padding:14px}
-.grid>.card:nth-child(2){order:-1;grid-column:1/-1;background:var(--navy);color:#fff;border-color:transparent}.grid>.card:nth-child(2) .k,.grid>.card:nth-child(2) small{color:#c3d0e2}.grid>.card:nth-child(2) .v{font-size:30px}
-.grid>.card:nth-child(6){grid-column:1/-1}
-.row{padding:12px 4px;min-height:56px}.row.h.t{display:none}
-.row.t{grid-template-columns:1fr auto;grid-template-areas:"a c" "a d";row-gap:2px}.row.t>:nth-child(1){grid-area:a}.row.t>:nth-child(3){grid-area:c}.row.t>:nth-child(4){grid-area:d}
-.tb{grid-template-columns:1fr 1fr}.tb input{grid-column:1/-1}
-.opt{min-height:60px;padding:14px}.phone{max-width:none}.acts .btn{flex:1 1 100%}
-#toast{bottom:calc(76px + env(safe-area-inset-bottom,0px));width:calc(100% - 28px);text-align:center}
-.bt{padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 16px rgba(15,34,56,.06)}
-.bt a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:56px;padding:4px 0;font-size:11px}
-.bt a.on{background:transparent;color:var(--brand)}.bt a.on svg{stroke-width:2.3}
-body.kb .bt{display:none}body.kb main{padding-bottom:24px}}
-@media(max-height:480px) and (max-width:900px){.top{position:static}.bt a{flex-direction:row;min-height:44px;font-size:12px}.bt svg{display:none}.grid{grid-template-columns:repeat(3,1fr)}}
-@media(prefers-reduced-motion:no-preference){.btn,.opt,.row,.bt a{transition:background .15s,transform .1s}.btn:active,.opt:active{transform:scale(.98)}}
 </style>
 </head>
 <body>
-<div class="top"><div class="sim"><span class="lg">PROTOTYPE DE DÉMONSTRATION — paiements simulés : aucun fonds, aucune connexion bancaire.</span><span class="sh">SIMULATION · aucun fonds réel</span></div>
+<div class="top"><div class="sim">PROTOTYPE DE DÉMONSTRATION — paiements simulés : aucun fonds, aucune connexion bancaire.</div>
 <header>
   <div class="logo"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="7" fill="#0e7c86"/><path d="M7 19V7l12 12V7" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>NexaPay</div>
   <div class="sp"></div><div class="who" id="who"></div>
@@ -95,11 +70,10 @@ body.kb .bt{display:none}body.kb main{padding-bottom:24px}}
 <nav class="bt" id="bt"></nav>
 <div id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const NAV=[["tableau","Tableau de bord","Accueil"],["demande","Nouvelle demande","Encaisser"],["transactions","Transactions","Historique"],["client","Vue client (démo)","Vue client"],["profil","Profil","Profil"]];
-const ICON={tableau:'<path d="M3 11l9-8 9 8v10H4z"/>',demande:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',transactions:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',client:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',profil:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'};
-const ic=k=>`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 const METHODS=[["DZ Mob Pay","QR interbancaire via GIE Monétique"],["Baridi Pay","QR BaridiMob via Algérie Poste"],["Carte CIB / Edahabia","Lien de paiement via passerelle partenaire"]];
 const ST={paid:["Payé (simulé)","ok"],pending:["En attente","warn"],failed:["Échoué","bad"]};
 const DESC=["Veste en cuir","Robe d’été","Sac à main","Commande traiteur","Chaussures","Séance de coaching"];
@@ -107,7 +81,7 @@ let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
 const now=Date.now(),DAY=864e5;function demo(){const out=[];seed=7;for(let i=0;i<64;i++){const r=rnd();out.push({id:"NXP-"+(1100-i),ref:"CMD-"+(2500-i*3),amt:Math.round((900+rnd()*14000)/50)*50,st:(i===1||i===3)?"pending":r<.85?"paid":"failed",t:now-i*2.8*DAY-rnd()*DAY,m:METHODS[Math.floor(rnd()*3)][0],desc:DESC[Math.floor(rnd()*6)],ev:[]});}return out}
 let tx=demo();
 let S={cur:null,sel:null,q:"",f:"",method:0,busy:false,err:"",d:{amt:"",ref:"",desc:""},sync:"local",loading:false,arm:false,profile:{name:"Boutique Lina",city:"Alger",activity:"Vêtements"}};
-let cloud=null;if(window.claude){tx=[];S.loading=true;S.profile={name:"Ma boutique",city:"",activity:""}}
+let cloud=null;tx=[];S.loading=true;S.user=null;S.profile={name:"Ma boutique",city:"",activity:""};
 const fmt=n=>Math.round(n).toLocaleString("fr-FR")+" DZD";
 const fd=t=>new Date(t).toLocaleString("fr-FR",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"});
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -118,10 +92,10 @@ function stats(){const p=tx.filter(x=>x.st==="paid"),n=k=>tx.filter(x=>x.st===k)
 function chart(){const d=new Date(now),M=[];for(let i=5;i>=0;i--){const a=new Date(d.getFullYear(),d.getMonth()-i,1);M.push({k:a.getFullYear()*12+a.getMonth(),l:a.toLocaleString("fr-FR",{month:"short"}),v:0})}
 tx.filter(x=>x.st==="paid").forEach(x=>{const a=new Date(x.t),k=a.getFullYear()*12+a.getMonth(),m=M.find(z=>z.k===k);if(m)m.v+=x.amt});
 const mx=Math.max(1,...M.map(m=>m.v));let o=`<svg viewBox="0 0 360 170" width="100%" role="img" aria-label="Volume encaissé par mois">`;
-M.forEach((m,i)=>{const h=Math.round(m.v/mx*110),x=14+i*57;o+=`<rect x="${x}" y="${130-h}" width="38" height="${h}" rx="6" fill="var(--brand)" opacity="${i===5?1:.55}"/><text x="${x+19}" y="148" text-anchor="middle" font-size="12" fill="var(--mut)">${m.l}</text><text x="${x+19}" y="${124-h}" text-anchor="middle" font-size="11" fill="var(--ink)">${m.v?Math.round(m.v/1000)+" k":""}</text>`});
+M.forEach((m,i)=>{const h=Math.round(m.v/mx*110),x=14+i*57;o+=`<rect x="${x}" y="${130-h}" width="38" height="${h}" rx="6" fill="var(--brand)" opacity="${i===5?1:.55}"/><text x="${x+19}" y="148" text-anchor="middle" font-size="11" fill="var(--mut)">${m.l}</text><text x="${x+19}" y="${124-h}" text-anchor="middle" font-size="10" fill="var(--ink)">${m.v?Math.round(m.v/1000)+" k":""}</text>`});
 return o+"</svg>"}
-const SHARE="https://claude.ai/artifact/Lkvtt6gDzNHPbonmmMQdi9";
-const payURL=()=>SHARE+"#client";
+const sb=supabase.createClient("https://dolcwgdhmbnnulxfvxkd.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvbGN3Z2RobWJubnVseGZ2eGtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUzNzg1NDgsImV4cCI6MjExMDk1NDU0OH0.qIvDMDd5E0PWH6PMx6nXOJp6hzbx-4T_fnmrMrT917M");
+const payURL=c=>new URL("pay.html?c="+c.code,location.href).href;
 function qrReal(text){if(typeof qrcode!=="function")return null;try{const q=qrcode(0,"M");q.addData(text);q.make();const n=q.getModuleCount(),m=4;let d="";for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(q.isDark(y,x))d+=`M${x+m} ${y+m}h1v1h-1z`;return `<svg class="qr" viewBox="0 0 ${n+2*m} ${n+2*m}" role="img" aria-label="QR code à scanner" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#000"/></svg>`}catch(_){return null}}
 function curTx(){let c=S.cur&&tx.find(x=>x.id===S.cur);if(!c){c=tx.filter(x=>x.st==="pending").sort((a,b)=>b.t-a.t)[0];if(c)S.cur=c.id}return c}
 function qr(id){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;const n=25;let o=`<svg class="qr" viewBox="0 0 ${n} ${n}" role="img" aria-label="QR illustratif non scannable" shape-rendering="crispEdges">`;
@@ -145,14 +119,14 @@ return `<h1>Tableau de bord</h1><p class="sub">Vue d’ensemble des encaissement
 <p class="note">Aucun solde ni règlement n’est affiché : NexaPay ne détient pas de fonds. Les statuts viendraient d’un partenaire autorisé.</p>`},
 demande(){const c=S.cur&&tx.find(x=>x.id===S.cur);
 let o=`<h1>Nouvelle demande de paiement</h1><p class="sub">Liez chaque paiement à une commande. Le QR et le lien seraient fournis par un partenaire autorisé.</p><div class="two eq"><div class="card">
-<label for="amt">Montant (DZD)</label><input id="amt" type="number" min="100" step="50" inputmode="numeric" placeholder="4500" autocomplete="off" enterkeyhint="next" value="${esc(S.d.amt)}">
-<label for="ref">Référence de commande</label><input id="ref" placeholder="CMD-2601" autocomplete="off" autocapitalize="characters" enterkeyhint="next" value="${esc(S.d.ref)}">
-<label for="desc">Description</label><input id="desc" placeholder="Veste en cuir, taille M" autocomplete="off" enterkeyhint="done" value="${esc(S.d.desc)}">
+<label for="amt">Montant (DZD)</label><input id="amt" type="number" min="100" step="50" inputmode="numeric" placeholder="4500" value="${esc(S.d.amt)}">
+<label for="ref">Référence de commande</label><input id="ref" placeholder="CMD-2601" value="${esc(S.d.ref)}">
+<label for="desc">Description</label><input id="desc" placeholder="Veste en cuir, taille M" value="${esc(S.d.desc)}">
 <div class="err" id="err">${esc(S.err)}</div><button class="btn" type="button" data-act="gen">Générer la demande</button>
 <p class="note">Minimum 100 DZD, seuil du rail Baridi Pay (source du dossier stratégique).</p></div>`;
-const Q=c?qrReal(payURL()):null;if(c)o+=`<div class="card" style="text-align:center"><span class="badge warn">En attente · SIMULATION</span><h3 style="margin:8px 0 0">${fmt(c.amt)}</h3><div class="note">${esc(c.ref)} · ${esc(c.desc)}</div>${Q||qr(c.id)}<div class="note">${Q?"QR de démonstration : scannez-le avec l’appareil photo d’un téléphone connecté au même compte Claude. Il ouvre l’écran client du prototype. Ce n’est pas un QR bancaire : aucun partenaire, aucun fonds.":"QR illustratif, non scannable (bibliothèque QR indisponible)."}${S.sync==="cloud"?"":"<br><b>Mode démo local : l’autre téléphone ne verra pas cette demande.</b>"}</div>
-<p class="note" style="word-break:break-all">${payURL()}</p>
-<div class="acts"><button class="btn s" type="button" data-act="copy">Copier le lien</button><a class="btn" href="#client">Ouvrir la vue client</a></div></div>`;
+const Q=c?qrReal(payURL(c)):null;if(c)o+=`<div class="card" style="text-align:center"><span class="badge warn">En attente · SIMULATION</span><h3 style="margin:8px 0 0">${fmt(c.amt)}</h3><div class="note">${esc(c.ref)} · ${esc(c.desc)}</div>${Q||qr(c.id)}<div class="note">${Q?"QR de démonstration : scannez-le avec l’appareil photo de n’importe quel téléphone. Il ouvre la page publique de simulation de paiement. Ce n’est pas un QR bancaire : aucun partenaire, aucun fonds.":"QR illustratif, non scannable (bibliothèque QR indisponible)."}${S.sync==="cloud"?"":"<br><b>Mode démo local : l’autre téléphone ne verra pas cette demande.</b>"}</div>
+<p class="note" style="word-break:break-all">${payURL(c)}</p>
+<button class="btn s" type="button" data-act="copy">Copier le lien</button> <a class="btn" href="#client">Ouvrir la vue client</a></div>`;
 else o+=`<div class="card mut">La demande générée apparaîtra ici, avec son QR de démonstration et son lien de partage.</div>`;
 return o+"</div>"},
 transactions(){let L=flt();
@@ -165,7 +139,7 @@ o+=`<div class="card"><div class="tb"><input id="q" placeholder="Rechercher une 
 <div class="row h t"><div>Référence</div><div>Moyen</div><div class="r">Montant</div><div class="r">Statut</div></div>`;
 o+=L.slice(0,25).map(x=>`<div class="row t" data-act="open" role="button" tabindex="0" data-id="${x.id}"><div>${esc(x.ref)}<div class="note">${fd(x.t)}</div></div><div class="mut">${esc(x.m)}</div><div class="r">${fmt(x.amt)}</div><div class="r">${badge(x.st)}</div></div>`).join("")||`<p class="mut">Aucun résultat.</p>`;
 return o+`<p class="note">${L.length} résultat(s), 25 affichés. Le téléchargement de fichiers n’est pas disponible dans cette démo : le rapport se copie au format CSV.</p></div>`},
-profil(){const p=S.profile;return `<h1>Profil de la boutique</h1><p class="sub">Ces informations apparaissent sur la vue client.</p><div class="card" style="max-width:520px"><label for="pn">Nom de la boutique</label><input id="pn" value="${esc(p.name)}" maxlength="60"><label for="pc">Ville</label><input id="pc" value="${esc(p.city)}" maxlength="40"><label for="pa">Activité</label><input id="pa" value="${esc(p.activity)}" maxlength="60" placeholder="Vêtements, traiteur…"><div class="err" id="perr"></div><button class="btn" type="button" data-act="saveprofile">Enregistrer</button><p class="note">${cloud?"Enregistré dans votre espace privé : vous seul pouvez le lire.":"Mode démo local : rien n’est conservé à la fermeture de la page."}</p></div><div class="card" style="max-width:520px;margin-top:12px"><b>Mes données</b><p class="note">Supprime toutes vos transactions de ce compte.</p><button class="btn d" type="button" data-act="wipe">${S.arm?"Confirmer : tout supprimer":"Supprimer toutes mes transactions"}</button></div>`},
+profil(){const p=S.profile;return `<h1>Profil de la boutique</h1><p class="sub">Ces informations apparaissent sur la vue client.</p><div class="card" style="max-width:520px"><label for="pn">Nom de la boutique</label><input id="pn" value="${esc(p.name)}" maxlength="60"><label for="pc">Ville</label><input id="pc" value="${esc(p.city)}" maxlength="40"><label for="pa">Activité</label><input id="pa" value="${esc(p.activity)}" maxlength="60" placeholder="Vêtements, traiteur…"><div class="err" id="perr"></div><button class="btn" type="button" data-act="saveprofile">Enregistrer</button> <button class="btn s" type="button" data-act="logout">Se déconnecter</button><p class="note">${cloud?"Enregistré dans votre espace privé : vous seul pouvez le lire.":"Mode démo local : rien n’est conservé à la fermeture de la page."}</p></div><div class="card" style="max-width:520px;margin-top:12px"><b>Mes données</b><p class="note">Supprime toutes vos transactions de ce compte.</p><button class="btn d" type="button" data-act="wipe">${S.arm?"Confirmer : tout supprimer":"Supprimer toutes mes transactions"}</button></div>`},
 client(){const c=curTx();
 if(!c)return `<div class="phone card"><h1>Vue client</h1><p class="sub">Aucune demande en cours.</p><a class="btn" href="#demande">Créer une demande</a></div>`;
 const done=c.st!=="pending";
@@ -177,36 +151,43 @@ ${done?`<div style="text-align:center;margin:10px 0">${badge(c.st)}</div><p clas
 <p><button class="btn" type="button" data-act="pay" ${S.busy?"disabled":""} style="width:100%">${S.busy?"Authentification en cours…":"Autoriser le paiement (simulation)"}</button></p>
 <p><button class="btn d" type="button" data-act="deny" ${S.busy?"disabled":""} style="width:100%">Simuler un refus</button></p>`}
 </div></div>`}};
-function render(){const v=(location.hash||"#tableau").slice(1);const k=V[v]?v:"tableau";$("#main").innerHTML=S.loading?`<p class="mut">Chargement de vos données…</p>`:V[k]();$("#who").innerHTML=`<b>${esc(S.profile.name)}</b><br>${S.sync==="cloud"?"● Données enregistrées":"○ Mode démo local"}`;
-const nav=(cls)=>NAV.map(n=>`<a href="#${n[0]}" class="${n[0]===k?"on":""}"${n[0]===k?' aria-current="page"':""}>${cls?ic(n[0])+"<span>"+n[2]+"</span>":n[1]}</a>`).join("");$("#side").innerHTML=nav(0);$("#bt").innerHTML=nav(1)}
-function setSt(c,st){c.st=st;c.ev.push({t:Date.now(),m:st==="paid"?"Statut « payé » reçu (simulé)":"Paiement refusé (simulé)"});persist()}
+function render(){const v=(location.hash||"#tableau").slice(1);const k=V[v]?v:"tableau";$("#main").innerHTML=S.loading?`<p class="mut">Chargement de vos données…</p>`:(S.user?V[k]():authView());document.body.classList.toggle("anon",!S.user);$("#who").innerHTML=`<b>${esc(S.profile.name)}</b><br>${S.sync==="cloud"?"● Données enregistrées":"○ Non connecté"}`;
+const nav=(cls)=>NAV.map(n=>`<a href="#${n[0]}" class="${n[0]===k?"on":""}">${cls?n[2]:n[1]}</a>`).join("");$("#side").innerHTML=nav(0);$("#bt").innerHTML=nav(1)}
+function setSt(c,st){c.st=st;c.ev.push({t:Date.now(),m:st==="paid"?"Statut « payé » reçu (simulé)":"Paiement refusé (simulé)"});persist(c)}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-act]");if(!a)return;const act=a.dataset.act;
 if(act==="gen"){const amt=+$("#amt").value,ref=$("#ref").value.trim(),desc=$("#desc").value.trim();S.d={amt:$("#amt").value,ref:$("#ref").value,desc:$("#desc").value};
 if(!(amt>=100)){S.err="Saisissez un montant d’au moins 100 DZD.";render();return}
 if(!ref){S.err="La référence de commande est obligatoire.";render();return}
-S.err="";S.d={amt:"",ref:"",desc:""};const id="NXP-"+(Math.max(1000,...tx.map(x=>+x.id.slice(4)))+1);tx.unshift({id,ref,amt,st:"pending",t:Date.now(),m:METHODS[0][0],desc:desc||"Sans description",ev:[]});S.cur=id;persist();render();toast("Demande générée (simulation).")}
-else if(act==="copy"){const u=payURL();try{navigator.clipboard.writeText(u).then(()=>toast("Lien copié : "+u),()=>toast(u))}catch(_){toast(u)}}
+S.err="";S.d={amt:"",ref:"",desc:""};sb.from("payment_requests").insert({ref_no:ref.slice(0,60),amount:amt,description:(desc||"Sans description").slice(0,120),method:METHODS[0][0]}).select().single().then(({data,error})=>{if(error)return toast("Enregistrement impossible : "+error.message);const x=fromRow(data);if(!tx.find(y=>y.code===x.code))tx.unshift(x);S.cur=x.id;render();toast("Demande générée (simulation).")})}
+else if(act==="copy"){const c0=tx.find(x=>x.id===S.cur),u=c0?payURL(c0):"";try{navigator.clipboard.writeText(u).then(()=>toast("Lien copié : "+u),()=>toast(u))}catch(_){toast(u)}}
 else if(act==="open"){S.sel=a.dataset.id;location.hash="#transactions";render()}
 else if(act==="close"){S.sel=null;e.preventDefault();render()}
 else if(act==="pick"){S.method=+a.dataset.i;render()}
 else if(act==="pay"||act==="deny"){S.busy=true;render();setTimeout(()=>{const c=tx.find(x=>x.id===S.cur);S.busy=false;if(!c){render();return}c.m=METHODS[S.method][0];setSt(c,act==="pay"?"paid":"failed");render();toast(act==="pay"?"Côté marchand : paiement de "+fmt(c.amt)+" reçu (SIMULATION).":"Côté marchand : paiement refusé (SIMULATION).")},1300)}
-else if(act==="seed"){tx=demo();persist();render();toast("Données de démonstration (fictives) chargées.")}
-else if(act==="saveprofile"){const n=$("#pn").value.trim();if(!n){$("#perr").textContent="Le nom de la boutique est obligatoire.";return}S.profile={name:n,city:$("#pc").value.trim(),activity:$("#pa").value.trim()};if(cloud)cloud.profile.set(S.profile).catch(x=>toast("Enregistrement impossible ("+(x.code||"erreur")+")."));render();toast("Profil enregistré.")}
-else if(act==="wipe"){if(!S.arm){S.arm=true;render();return}S.arm=false;tx=[];S.cur=null;S.sel=null;persist();render();toast("Transactions supprimées.")}
+else if(act==="login"||act==="signup"){const em=$("#em").value.trim(),pw=$("#pw").value;if(!em||pw.length<6){$("#aerr").textContent="Email et mot de passe (6 caractères minimum) requis.";return}
+(act==="login"?sb.auth.signInWithPassword({email:em,password:pw}):sb.auth.signUp({email:em,password:pw})).then(({data,error})=>{const el=$("#aerr");if(!el)return;if(error)el.textContent=error.message;else if(act==="signup"&&!data.session)el.textContent="Compte créé. Confirmez votre email, puis connectez-vous."})}
+else if(act==="logout"){sb.auth.signOut()}
+else if(act==="seed"){seedDemo()}
+else if(act==="saveprofile"){const n=$("#pn").value.trim();if(!n){$("#perr").textContent="Le nom de la boutique est obligatoire.";return}S.profile={name:n,city:$("#pc").value.trim(),activity:$("#pa").value.trim()};sb.from("profiles").upsert({id:S.user.id,...S.profile}).then(({error})=>{if(error)toast("Enregistrement impossible : "+error.message)});render();toast("Profil enregistré.")}
+else if(act==="wipe"){if(!S.arm){S.arm=true;render();return}S.arm=false;wipeAll()}
 else if(act==="resolve"){const c=tx.find(x=>x.id===a.dataset.id);if(c&&c.st==="pending"){setSt(c,a.dataset.st);render();toast("Statut mis à jour (SIMULATION).")}}
 else if(act==="csv"){const L=flt(),t=["id;reference;date;montant_dzd;statut;moyen"].concat(L.map(x=>[x.id,x.ref,new Date(x.t).toISOString().slice(0,16),x.amt,x.st,x.m].join(";"))).join("\n");try{navigator.clipboard.writeText(t).then(()=>toast("Rapport CSV copié ("+L.length+" lignes)."),()=>toast("Copie impossible dans ce navigateur."))}catch(_){toast("Copie impossible dans ce navigateur.")}}});
 document.addEventListener("input",e=>{if(["amt","ref","desc"].includes(e.target.id)){S.d[e.target.id]=e.target.value;return}if(e.target.id==="q"){S.q=e.target.value;const p=e.target.selectionStart;render();const q=$("#q");q.focus();q.setSelectionRange(p,p)}});
 document.addEventListener("change",e=>{if(e.target.id==="f"){S.f=e.target.value;render()}});
-document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-act][role=button]")){e.preventDefault();e.target.click()}else if(e.key==="Enter"&&e.target.id==="desc"){e.preventDefault();e.target.blur();$("[data-act=gen]").click()}});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-act][role=button]")){e.preventDefault();e.target.click()}});
 $("#theme").addEventListener("click",()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dark?"light":"dark";r.style.colorScheme=r.dataset.theme});
-addEventListener("hashchange",()=>{render();scrollTo(0,0)});addEventListener("focusin",e=>{if(e.target.matches&&e.target.matches("input,select"))document.body.classList.add("kb")});addEventListener("focusout",()=>document.body.classList.remove("kb"));render();
-function persist(){if(!cloud)return;clearTimeout(persist.h);persist.h=setTimeout(()=>{const body={tx:JSON.parse(JSON.stringify(tx))};persist.p=(persist.p||Promise.resolve()).then(()=>cloud&&cloud.ledger.set(body)).catch(e=>toast("Enregistrement impossible ("+(e&&e.code||"erreur")+")."))},300)}
-function fallback(){if(S.loading){cloud=null;S.loading=false;tx=demo();S.sync="local";S.profile={name:"Boutique Lina",city:"Alger",activity:"Vêtements"};render()}}
-async function boot(){try{const db=await claude.use("db"),user=await claude.use("user");if(!db||!user)return fallback();const id=await user.id();if(!id||(await user.can("data.write"))===false)return fallback();
-const col=db.collection("data/users/"+id);cloud={ledger:col.doc("ledger"),profile:col.doc("profile")};S.sync="cloud";
-cloud.profile.onSnapshot(s=>{if(s.metadata.hasPendingWrites)return;const d=s.exists?s.data():null;if(d&&typeof d.name==="string"){S.profile={name:d.name,city:d.city||"",activity:d.activity||""};if(!S.loading)render()}},()=>{});
-cloud.ledger.onSnapshot(s=>{if(s.metadata.hasPendingWrites)return;const d=s.exists?s.data():null;const n=d&&Array.isArray(d.tx)?d.tx:[];const first=S.loading;S.loading=false;if(first||JSON.stringify(n)!==JSON.stringify(tx)){const prev={};tx.forEach(x=>prev[x.id]=x.st);tx=n;if(!first)n.forEach(x=>{if(prev[x.id]==="pending"&&x.st!=="pending")toast("Paiement "+(x.st==="paid"?"reçu":"refusé")+" (simulation) : "+x.ref+" · "+fmt(x.amt))});if(S.cur&&!tx.find(x=>x.id===S.cur))S.cur=null;render()}},e=>{if(S.loading)fallback();else toast("Synchronisation interrompue ("+(e&&e.code||"erreur")+").")})}catch(e){fallback()}}
-if(window.claude){boot();setTimeout(fallback,10000)}
+addEventListener("hashchange",render);render();
+const fromRow=r=>({id:"NXP-"+(1000+r.seq),code:r.code,ref:r.ref_no,amt:Number(r.amount),st:r.status,t:Date.parse(r.created_at),m:r.method||"—",desc:r.description||"Sans description",ev:r.events||[]});
+function authView(){return `<div class="phone card"><h1>Connexion marchand</h1><p class="sub">Prototype de démonstration : utilisez des données fictives.</p><label for="em">Email</label><input id="em" type="email" autocomplete="username"><label for="pw">Mot de passe</label><input id="pw" type="password" autocomplete="current-password"><div class="err" id="aerr"></div><button class="btn" type="button" data-act="login">Se connecter</button> <button class="btn s" type="button" data-act="signup">Créer un compte</button></div>`}
+function persist(c){if(!c||!c.code)return;sb.from("payment_requests").update({status:c.st,method:c.m,events:c.ev}).eq("code",c.code).then(({error})=>{if(error)toast("Enregistrement impossible : "+error.message)})}
+function seedDemo(){const rows=demo().map(x=>({ref_no:x.ref,amount:x.amt,status:x.st,method:x.m,description:x.desc,events:x.ev,created_at:new Date(x.t).toISOString()}));sb.from("payment_requests").insert(rows).select().then(({data,error})=>{if(error)return toast("Chargement impossible : "+error.message);data.forEach(r=>{if(!tx.find(y=>y.code===r.code))tx.push(fromRow(r))});tx.sort((a,b)=>b.t-a.t);render();toast("Données de démonstration (fictives) chargées.")})}
+function wipeAll(){sb.from("payment_requests").delete().eq("merchant_id",S.user.id).then(({error})=>{if(error)return toast("Suppression impossible : "+error.message);tx=[];S.cur=null;S.sel=null;render();toast("Transactions supprimées.")})}
+async function loadAll(){const [p,q]=await Promise.all([sb.from("profiles").select("*").eq("id",S.user.id).maybeSingle(),sb.from("payment_requests").select("*").order("created_at",{ascending:false}).limit(500)]);
+if(q.error)throw q.error;if(p.data)S.profile={name:p.data.name,city:p.data.city||"",activity:p.data.activity||""};tx=q.data.map(fromRow);S.sync="cloud";cloud=true;
+sb.channel("pr-"+S.user.id).on("postgres_changes",{event:"*",schema:"public",table:"payment_requests"},pl=>{if(pl.eventType==="DELETE"){tx=tx.filter(x=>x.code!==pl.old.code);render();return}const x=fromRow(pl.new),i=tx.findIndex(y=>y.code===x.code);if(i<0)tx.unshift(x);else{const was=tx[i].st;tx[i]=x;if(was==="pending"&&x.st!=="pending")toast("Paiement "+(x.st==="paid"?"reçu":"refusé")+" (simulation) : "+x.ref+" · "+fmt(x.amt))}tx.sort((a,b)=>b.t-a.t);render()}).subscribe()}
+async function start(ses){S.loading=true;render();await sb.removeAllChannels();S.user=ses?ses.user:null;S.sync="local";cloud=null;tx=[];S.cur=null;
+if(S.user){try{await loadAll()}catch(e){toast("Chargement impossible : "+(e.message||"erreur")+". Avez-vous exécuté le script SQL ?")}}S.loading=false;render()}
+sb.auth.onAuthStateChange((ev,ses)=>{const id=ses&&ses.user&&ses.user.id;if(ev==="INITIAL_SESSION"||ev==="SIGNED_OUT"||(ev==="SIGNED_IN"&&id!==(S.user&&S.user.id)))setTimeout(()=>start(ses),0)})
 </script>
 </body>
 </html>
