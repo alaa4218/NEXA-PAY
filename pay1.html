@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#1f3a5f"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex">
+<title>Paiement sécurisé (simulation) — NexaPay</title>
+<style>
+:root{--ink:#0f2238;--mut:#5b6b80;--brand:#0e7c86;--navy:#1f3a5f;--bg:#f3f6fb;--line:#dfe6ef;--bad:#b3261e;--ok:#17803d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(130px + env(safe-area-inset-bottom))}
+.sim{background:#fff1d6;color:#9a5b00;font-size:12.5px;font-weight:700;padding:8px 12px;text-align:center;position:sticky;top:0;z-index:5}
+.hero{background:var(--navy);color:#fff;padding:18px 16px 58px;text-align:center}.hero b{font-size:18px}.hero div{opacity:.8;font-size:13px}
+main{max-width:480px;margin:-44px auto 0;padding:0 14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 6px 18px rgba(15,34,56,.07)}
+.amt{font-size:32px;font-weight:800;text-align:center}.mut{color:var(--mut)}.c{text-align:center}.small{font-size:12.5px}
+h2{font-size:15px;margin:0 0 8px}
+.m{display:flex;justify-content:space-between;align-items:center;width:100%;font:inherit;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-top:8px;min-height:52px;cursor:pointer;color:inherit}
+.m.on{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand) inset}.m span{font-size:12.5px;color:var(--mut)}
+.cc{border-radius:16px;padding:16px;color:#fff;background:linear-gradient(135deg,#1f3a5f,#0e7c86);margin:4px 0 12px;font-variant-numeric:tabular-nums}
+.cc .n{font-size:19px;letter-spacing:.08em;margin:18px 0 10px}.cc .t{display:flex;justify-content:space-between;font-size:12px;opacity:.9}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input{width:100%;min-height:48px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);font:inherit;background:#fff;color:var(--ink)}
+input[readonly]{background:#eef2f7;color:#6b7a8f}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lock{background:#fff1d6;color:#9a5b00;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600;margin-bottom:6px}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-top:4px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+.bar div{max-width:480px;margin:0 auto}
+button.go,button.no{display:block;width:100%;min-height:50px;border-radius:14px;font:inherit;font-weight:700;cursor:pointer}
+button.go{background:var(--brand);color:#fff;border:0}button.no{background:#fff;color:var(--bad);border:1px solid var(--bad);margin-top:8px}button:disabled{opacity:.5}
+.big{font-size:54px;line-height:1}
+</style></head><body>
+<div class="sim">SIMULATION · aucun argent réel ne sera débité · ne saisissez jamais votre vraie carte</div>
+<div class="hero"><b id="mn">NexaPay</b><div>🔒 Paiement sécurisé (démonstration)</div></div>
+<main id="m"><div class="card c mut">Chargement…</div></main>
+<div class="bar" id="bar" hidden><div><button class="go" id="go" type="button"></button><button class="no" id="no" type="button">Refuser / annuler (simulation)</button></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const sb=supabase.createClient("https://dolcwgdhmbnnulxfvxkd.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvbGN3Z2RobWJubnVseGZ2eGtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUzNzg1NDgsImV4cCI6MjExMDk1NDU0OH0.qIvDMDd5E0PWH6PMx6nXOJp6hzbx-4T_fnmrMrT917M");
+const code=new URLSearchParams(location.search).get("c")||"",m=document.getElementById("m"),bar=document.getElementById("bar"),go=document.getElementById("go"),no=document.getElementById("no");
+const METHODS=[["DZ Mob Pay","QR interbancaire"],["BaridiMob","Application Algérie Poste"],["CIB / Edahabia","Carte interbancaire"],["Visa","Carte Visa"],["Mastercard","Carte Mastercard"]];
+const CARDS={"CIB / Edahabia":"0000 0000 0000 0000","Visa":"4242 4242 4242 4242","Mastercard":"5555 5555 5555 4444"};
+const fmt=n=>new Intl.NumberFormat("fr-FR").format(n)+" DZD";
+const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+let sel=3;
+async function load(){
+  bar.hidden=true;
+  if(!/^[0-9a-f]{32}$/.test(code))return m.replaceChildren(h("div","card c mut","Lien invalide."));
+  const {data,error}=await sb.rpc("get_payment",{p_code:code});
+  if(error||!data||!data.length)return m.replaceChildren(h("div","card c mut","Demande introuvable."));
+  draw(data[0]);
+}
+function summary(r){const c=h("div","card");c.append(h("div","amt",fmt(r.amount)),h("div","c mut","Commande "+r.ref_no+(r.product?" · "+r.product:"")),h("div","c mut small","Marchand : "+r.merchant_name+(r.merchant_city?", "+r.merchant_city:"")));return c}
+function ro(label,val){const w=h("div"),l=h("label","",label),i=h("input");i.value=val;i.readOnly=true;i.tabIndex=-1;i.autocomplete="off";i.setAttribute("inputmode","none");w.append(l,i);return [w,i]}
+function draw(r){
+  document.getElementById("mn").textContent=r.merchant_name;
+  const s=summary(r);
+  if(r.status!=="pending"||r.expired){
+    const c=h("div","card c"),paid=r.status==="paid";
+    c.append(h("div","big",r.expired&&r.status==="pending"?"⌛":paid?"✅":"❌"),h("h2","",r.expired&&r.status==="pending"?"Demande expirée":paid?"Paiement accepté (simulation)":"Paiement refusé (simulation)"),h("p","mut small","Aucun montant n’a été débité. Cette page est une démonstration."));
+    return m.replaceChildren(s,c);
+  }
+  const mc=h("div","card");mc.append(h("h2","","Moyen de paiement"));
+  const box=h("div"),nm=h("input"),nerr=h("div","err");
+  nm.id="nm";nm.maxLength=80;nm.placeholder="Prénom et nom";nm.autocomplete="name";
+  const bs=METHODS.map((x,i)=>{const b=h("button","m"+(i===sel?" on":""));b.type="button";b.append(h("b","",x[0]),h("span","",x[1]));b.onclick=()=>{sel=i;bs.forEach((y,j)=>y.className="m"+(j===i?" on":""));paint()};return b});
+  mc.append(...bs);
+  let holder=null;
+  function paint(){
+    const n=METHODS[sel][0],num=CARDS[n];box.replaceChildren();
+    if(num){
+      const cc=h("div","cc");cc.append(h("div","",n.toUpperCase()),h("div","n",num),h("div","t")),
+      cc.lastChild.append(h("span","",(nm.value||"NOM PRÉNOM").toUpperCase()),h("span","","12/30"));box.append(cc);
+      box.append(h("div","lock","🔒 Informations de carte de TEST, pré-remplies et verrouillées. Ne saisissez jamais votre vraie carte."));
+      const [a]=ro("Numéro de carte",num),[b,hi]=ro("Titulaire",(nm.value||"NOM PRÉNOM").toUpperCase()),[d]=ro("Expiration","12/30"),[e]=ro("Code de sécurité (CVV)","123");
+      holder=hi;const g=h("div","g");g.append(d,e);box.append(a,b,g);
+    }else{holder=null;box.append(h("p","mut small","Dans la réalité, vous seriez redirigé vers l’application "+n+" pour valider. Ici, la validation est simulée."))}
+  }
+  nm.oninput=()=>{nerr.textContent="";if(holder)holder.value=(nm.value||"NOM PRÉNOM").toUpperCase();const t=box.querySelector(".cc .t span");if(t)t.textContent=(nm.value||"NOM PRÉNOM").toUpperCase()};
+  const pc=h("div","card");pc.append(h("h2","","Vos informations"),h("label","","Nom complet *"),nm,nerr);
+  m.replaceChildren(s,pc,mc);mc.append(box);paint();
+  go.textContent="Payer "+fmt(r.amount)+" (simulation)";bar.hidden=false;
+  const act=async res=>{
+    if(res==="paid"&&nm.value.trim().length<2){nerr.textContent="Veuillez saisir votre nom pour confirmer.";nm.focus();return}
+    go.disabled=no.disabled=true;go.textContent="Traitement…";
+    const {data,error}=await sb.rpc("simulate_payment",{p_code:code,p_result:res,p_method:METHODS[sel][0],p_customer:nm.value.trim()});
+    go.disabled=no.disabled=false;
+    if(error||data==="unavailable"||data==="name_required"){nerr.textContent="Cette demande n’est plus disponible.";}
+    load();
+  };
+  go.onclick=()=>act("paid");no.onclick=()=>act("failed");
+}
+load();
+</script></body></html>
